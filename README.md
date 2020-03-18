@@ -1,8 +1,5 @@
-# invoice-share
-Workflow to accept invoices
+# DocShare
+Share and archive documents
 
-- zaprojektowanie aplikacji do zarządzania fakturami
-- założenia projektu:
-  - logowanie do aplikacji będzie odbywać się poprzez autentykację z AD
-  = przechowywanie fv w archiwum
+
   
