@@ -1,12 +1,37 @@
 // Import all dependencies & middleware here
-import express from "express";// Init an Express App. 
+import express from "express"; 
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
+import cors from "cors";
+import passport from "passport";
 
+
+/// import constanst
+import {MONGOOSE_URL, MONGO_PARAMS, SERVER_PORT , SERVER_HOST } from "./store/config";
+
+/// import controlers
 import { userController } from "./controller";
 
-const MONGOOSE_URL = "mongodb+srv://automate:automate@cluster0-h3l9t.azure.mongodb.net/docShare?retryWrites=true&w=majority";
+import { User } from "./database/models";
 const app = express();
+
+/// Set up CORS
+app.use(cors());
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(User.createStrategy());
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+passport.deserializeUser(function(id, done) {
+  User.findById(id, function(err, user) {
+    console.log("deserializacja");
+    done(err, user);
+  });
+});
+
 
 // Use your dependencies here
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -15,10 +40,11 @@ app.use(bodyParser.json());
 // API
 app.use('/', userController);
 
+
 // Start Server here
-app.listen(8080, () => {
-   console.log("Server is running on port 8080 !");
-   mongoose.connect(MONGOOSE_URL).then(() => {
+app.listen(SERVER_PORT, SERVER_HOST);
+  console.log("HOST:", SERVER_HOST, "PORT", SERVER_PORT, "VER:", process.env.VERSION, "SYSTEM:", process.env.SYSTEM);
+mongoose.connect(MONGOOSE_URL, MONGO_PARAMS )
+.then(() => {
     console.log("Conneted to mongoDB");
   });
-});

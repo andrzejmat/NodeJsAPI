@@ -1,21 +1,49 @@
 import { Schema } from "mongoose";
-import sha256 from "sha256";
+const passportLocalMongoose = require('passport-local-mongoose');
 
 
 const userSchema = new Schema({
-    hashedPassword: { 
-        type: String, 
-        required: true 
+    first_name: {
+        type: String,
+        require: false
     },
-    email: { 
-        type: String, 
-        required: true 
+    last_name: {
+        type: String,
+        require: false
+    },
+    username: {
+        type: String,
+        require: true,
+        unique: true
+    },
+    password: {
+        type: String,
+        require: true
+    },
+    resetToken: {
+        type: String
+    },
+    resetTokenDate: {
+        type: Date
+    },
+    active: {
+        type: Boolean,
+        require: true,
+        default: false
     },
 });
-/**
-* @param {*} password
-*/
 
-userSchema.methods.comparePassword = function comparePassword(password) {
- return this.hashedPassword === sha256(password);
-};export default userSchema;
+userSchema.plugin(passportLocalMongoose, {
+    usernameLowerCase: true,
+    usernameUnique: true,
+
+    findByUsername: function (model, queryParameters) {
+        // Add additional query parameter - AND condition - active: true
+        queryParameters.active = true;
+        return model.findOne(queryParameters);
+    }
+
+});
+
+
+export default userSchema;
