@@ -1,3 +1,5 @@
 {
-    "MongoUrl": "mongodb+srv://automate:automate@cluster0-h3l9t.azure.mongodb.net/docShare?retryWrites=true&w=majority"
+    "MongoUrl": "mongodb+srv://automate:automate@cluster0-h3l9t.azure.mongodb.net/docShare?retryWrites=true&w=majority",
+    "jwtkey": "sdjklfhksdhfkskgfskdjgksyrshvf27346vvdsad3havcqwjqf",
+    "jwtExpire": "6h"
 }
