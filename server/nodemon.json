@@ -1,0 +1,8 @@
+{
+    "env": {
+        "SYSTEM": "test",   
+        "VERSION": "0.0.1",
+        "SYSTEM_LINK": "localhost:8000"
+    }
+}
+
